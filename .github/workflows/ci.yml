@@ -1,0 +1,48 @@
+name: Laravel CI
+
+on:
+  push:
+    branches: [ "main", "master" ] # Aciona em push para as branches principais
+  pull_request:
+    branches: [ "main", "master" ] # Aciona em cada Pull Request para as branches principais
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # O sistema operacional da máquina virtual onde o job será executado
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4 # Clona seu repositório
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2 # Configura o PHP e suas extensões
+      with:
+        php-version: '8.2' # **Defina a versão do PHP do seu projeto Laravel**
+        extensions: mbstring, pdo_sqlite, bcmath, exif, json # Extensões PHP comuns e necessárias
+        ini-values: post_max_size=256M, upload_max_filesize=256M
+        tools: composer # Garante que o Composer esteja disponível
+
+    - name: Install Composer Dependencies
+      run: composer install --prefer-dist --no-interaction --optimize-autoloader # Instala dependências (inclui dev-dependencies para testes)
+  # Correção: O --no-dev foi removido em um passo anterior, mas sua linha atual está correta para instalar dev-dependencies.
+
+    - name: Create .env file
+      run: cp .env.example .env # Cria um .env básico para o ambiente de CI
+
+    - name: Generate Application Key
+      run: php artisan key:generate # Gera a chave da aplicação
+
+    - name: Configure Database for Testing
+      run: |
+        # Altera o .env para usar SQLite em memória, conforme configurado no phpunit.xml
+        sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env
+        sed -i 's/^DB_DATABASE=.*/DB_DATABASE=:memory:/' .env
+        # Se você usar um arquivo SQLite real para testes (e não :memory:), ajuste o DB_DATABASE
+        # ou crie o arquivo aqui com 'touch database/database.sqlite'
+
+    - name: Run Migrations for Tests
+      run: php artisan migrate --force # Roda as migrations no banco de dados de teste
+      # --force: Necessário para rodar migrations em ambientes não interativos (como CI)
+
+    - name: Run PHPUnit Tests
+      run: php artisan test # Executa todos os seus testes PHPUnit (ou pest se for seu caso)

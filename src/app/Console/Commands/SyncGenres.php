@@ -48,7 +48,12 @@ class SyncGenres extends Command
 
         $response = $this->tmdb->getGenreMovies();
 
-        if ($response['status_code'] === 200 && !empty($response['data'])) {
+        if ($response['status_code'] === 200) {
+
+            if(empty($response['data'])) {
+                $this->info('Nenhum gênero encontrado.');
+                return Command::SUCCESS;
+            }
             foreach ($response['data'] as $genre) {
                 Genre::updateOrCreate(
                     ['id' => $genre['id']],
