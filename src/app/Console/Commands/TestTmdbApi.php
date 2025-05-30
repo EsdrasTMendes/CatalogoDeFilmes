@@ -7,30 +7,20 @@ use App\Service\TmdbService;
 
 class TestTmdbApi extends Command
 {
-    // Nome do comando pra rodar via terminal
     protected $signature = 'test:tmdb';
-
-    // Descrição exibida no comando `php artisan list`
     protected $description = 'Faz uma chamada de teste à API do TMDB e imprime os títulos dos filmes.';
-
-    // Método principal chamado quando o comando roda
     public function handle(TmdbService $tmdb)
     {
-        $this->info('🔍 Buscando filmes com o termo: batman');
+        $this->info('🔍 Buscando filmes com o termo: vingadores');
 
-        $result = $tmdb->searchMovies('batman');
+        $result = $tmdb->searchMovies('vingadores');
 
-        if (is_array($result) && isset($result['results'])) {
+        if (is_array($result)) {
             $this->info("🎬 Filmes encontrados:");
-            foreach ($result['results'] as $movie) {
-                $title = $movie['title'] ?? 'Sem título';
-                $releaseDate = $movie['release_date'] ?? 'Data desconhecida';
-                $this->line("- {$title} ({$releaseDate})");
-            }
+            \var_dump($result);
         } else {
             $this->error('❌ Nenhum resultado encontrado ou erro na requisição.');
         }
-
         return 0;
     }
 }
