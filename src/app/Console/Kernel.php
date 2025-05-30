@@ -9,12 +9,11 @@ class Kernel extends ConsoleKernel
 {
     protected $commands = [
         \App\Console\Commands\TestTmdbApi::class,
-        // Adicione outros comandos personalizados aqui
+        \App\Console\Commands\SyncGenres::class,
     ];
 
     protected function schedule(Schedule $schedule): void
     {
-        // Agenda de tarefas (não precisa usar por enquanto)
     }
 
     protected function commands(): void

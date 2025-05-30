@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('tmdb_id')->unique();
             $table->string('title');
+            $table->string('original_title')->nullable();
+            $table->date('release_date')->nullable();
+            $table->text('overview')->nullable();
+            $table->json('genre_ids')->nullable();
             $table->string('poster_path')->nullable();
             $table->timestamps();
         });

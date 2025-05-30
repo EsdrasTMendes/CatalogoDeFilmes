@@ -13,10 +13,14 @@ class FavoriteMovie extends Model
     protected $fillable = [
         'tmdb_id',
         'title',
+        'original_title',
+        'release_date',
+        'overview',
+        'genre_ids',
         'poster_path',
     ];
 
-    // protected $casts = [
-    //     'genre_ids' => 'array',
-    // ];
+    protected $casts = [
+        'genre_ids' => 'array',
+    ];
 }
