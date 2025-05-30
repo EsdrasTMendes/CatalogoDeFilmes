@@ -2,7 +2,7 @@ name: Laravel CI
 
 on:
   push:
-    branches: [ "main", "master" ] # Aciona em push para as branches principais
+    branches: [ "main", "master", development] # Aciona em push para as branches principais
   pull_request:
     branches: [ "main", "master" ] # Aciona em cada Pull Request para as branches principais
 
