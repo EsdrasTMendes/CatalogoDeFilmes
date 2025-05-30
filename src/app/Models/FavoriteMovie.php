@@ -17,10 +17,12 @@ class FavoriteMovie extends Model
         'release_date',
         'overview',
         'genre_ids',
+        'rating',
         'poster_path',
     ];
 
     protected $casts = [
         'genre_ids' => 'array',
+        'rating' => 'integer',
     ];
 }

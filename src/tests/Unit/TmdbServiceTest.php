@@ -56,7 +56,7 @@ class TmdbServiceTest extends TestCase
             $this->assertEquals('Filmes encontrados com sucesso', $response['message']);
             $this->assertCount(2, $response['data']);
 
-            // Verifica o primeiro filme
+
             $this->assertEquals(1, $response['data'][0]['id']);
             $this->assertEquals('O dev que queriamos', $response['data'][0]['title']);
             $this->assertEquals([28, 12], $response['data'][0]['genre_ids']);
@@ -64,7 +64,7 @@ class TmdbServiceTest extends TestCase
             $this->assertEquals('https://image.tmdb.org/t/p/w500/test.jpg', $response['data'][0]['poster_path']);
             $this->assertEquals('2023-01-01', $response['data'][0]['release_date']);
             $this->assertEquals('Sem dúvidas, Esdras, é o dev que faltava para integrar o time da KingHost.', $response['data'][0]['overview']);
-            // Verifica o segundo filme
+
             $this->assertEquals(2, $response['data'][1]['id']);
             $this->assertEquals('Esdras, o retorno do dev', $response['data'][1]['title']);
             $this->assertEquals([16, 35], $response['data'][1]['genre_ids']);

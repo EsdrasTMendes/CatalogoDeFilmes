@@ -1,31 +1,130 @@
 <?php
 
 namespace App\Service;
+
 use App\Models\FavoriteMovie;
+use Exception; // Importar a classe de exceção
 
 class FavoriteMovieService
 {
-
-
-    public function addFavoriteMovie($tmdbId)
+    /**
+     * Cria ou atualiza um filme favorito no banco de dados local.
+     * Os dados do filme são recebidos diretamente do frontend.
+     *
+     * @param object $movie Objeto contendo os dados do filme (do frontend).
+     * @return array Retorna um array com 'status_code', 'message' e 'data' (o filme favorito salvo).
+     */
+    public function CreateFavoriteMovie(object $movie): array
     {
+        try {
+            $existingFavorite = FavoriteMovie::where('tmdb_id', $movie->tmdb_id)->first();
+            if ($existingFavorite) {
+                return [
+                    'status_code' => 200,
+                    'message' => 'Filme já está na lista de favoritos.',
+                    'data' => $existingFavorite->toArray(),
+                ];
+            }
 
-        $favoriteMovie = FavoriteMovie::updateOrCreate(
-            ['tmdb_id' => $tmdbId],
-            [
-                'title' => '',
-                'original_title' => '',
-                'release_date' => '',
-                'overview' => '',
-                'genre_ids' => '',
-                'poster_path' => '',
-            ]
-        );
+            $favoriteMovie = FavoriteMovie::create([
+                'tmdb_id' => $movie->tmdb_id,
+                'title' => $movie->title,
+                'original_title' => $movie->original_title,
+                'release_date' => $movie->release_date,
+                'overview' => $movie->overview,
+                'genre_ids' => $movie->genre_ids ?? [],
+                'rating' => $movie->rating ?? null,
+                'poster_path' => $movie->poster_path,
+            ]);
 
-        return [
-            'status_code' => 200,
-            'message' => 'Filme adicionado aos favoritos com sucesso',
-            'data' => $favoriteMovie,
-        ];
+            return [
+                'status_code' => 201,
+                'message' => 'Filme adicionado aos favoritos com sucesso!',
+                'data' => $favoriteMovie->toArray(),
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'status_code' => 500,
+                'message' => 'Erro interno ao adicionar filme aos favoritos: ' . $e->getMessage(),
+                'data' => [],
+            ];
+        }
+    }
+
+    public function GetFavoriteMovies(): array
+    {
+        try {
+            $favoriteMovies = FavoriteMovie::all();
+
+            return [
+                'status_code' => 200,
+                'message' => 'Lista de filmes favoritos recuperada com sucesso.',
+                'data' => $favoriteMovies->toArray(),
+            ];
+        } catch (Exception $e) {
+            return [
+                'status_code' => 500,
+                'message' => 'Erro interno ao recuperar filmes favoritos: ' . $e->getMessage(),
+                'data' => [],
+            ];
+        }
+    }
+
+    public function DeleteFavoriteMovie(int $id): array
+    {
+        try {
+            $favoriteMovie = FavoriteMovie::find($id);
+            if (!$favoriteMovie) {
+                return [
+                    'status_code' => 404,
+                    'message' => 'Filme favorito não encontrado.',
+                    'data' => [],
+                ];
+            }
+
+            $favoriteMovie->delete();
+
+            return [
+                'status_code' => 200,
+                'message' => 'Filme favorito removido com sucesso.',
+                'data' => [],
+            ];
+        } catch (Exception $e) {
+            return [
+                'status_code' => 500,
+                'message' => 'Erro interno ao remover filme favorito: ' . $e->getMessage(),
+                'data' => [],
+            ];
+        }
+    }
+
+    public function UpdateFavoriteMovie(int $id, int $rating): array
+    {
+        try {
+            $favoriteMovie = FavoriteMovie::find($id);
+            if (!$favoriteMovie) {
+                return [
+                    'status_code' => 404,
+                    'message' => 'Filme favorito não encontrado.',
+                    'data' => [],
+                ];
+            }
+
+            $favoriteMovie->rating = $rating;
+            $favoriteMovie->save();
+
+            return [
+                'status_code' => 200,
+                'message' => 'Filme favorito atualizado com sucesso.',
+                'data' => $favoriteMovie->toArray(),
+            ];
+        } catch (Exception $e) {
+            return [
+                'status_code' => 500,
+                'message' => 'Erro interno ao atualizar filme favorito: ' . $e->getMessage(),
+                'data' => [],
+            ];
+        }
     }
 }
