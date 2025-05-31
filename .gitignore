@@ -26,7 +26,7 @@ docker-compose.override.yml
 Thumbs.db
 
 # Frontend 
-front/node_modules
-front/dist
-front/.env
-front/npm-debug.log
+FrontEnd/node_modules
+FrontEnd/dist
+FrontEnd/.env
+FrontEnd/npm-debug.log
