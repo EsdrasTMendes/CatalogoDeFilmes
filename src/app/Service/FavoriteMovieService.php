@@ -74,7 +74,7 @@ class FavoriteMovieService
     public function DeleteFavoriteMovie(int $id): array
     {
         try {
-            $favoriteMovie = FavoriteMovie::find($id);
+            $favoriteMovie = FavoriteMovie::where('tmdb_id', $id)->first();
             if (!$favoriteMovie) {
                 return [
                     'status_code' => 404,
@@ -102,7 +102,7 @@ class FavoriteMovieService
     public function UpdateFavoriteMovie(int $id, int $rating): array
     {
         try {
-            $favoriteMovie = FavoriteMovie::find($id);
+            $favoriteMovie = FavoriteMovie::where('tmdb_id', $id)->first();
             if (!$favoriteMovie) {
                 return [
                     'status_code' => 404,

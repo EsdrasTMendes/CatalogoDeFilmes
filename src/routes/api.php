@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FavoriteMovieController;
@@ -23,11 +24,12 @@ Route::prefix('favorites')->group(function () {
     Route::get('/', [FavoriteMovieController::class, 'index']);
     // Exemplo de uso no frontend: GET /api/favorites
     Route::post('/', [FavoriteMovieController::class, 'store']);
-    // Exemplo de uso no frontend: POST /api/favorites
+    // Exemplo de uso no frontend: POST /api/favorites (Create - Collection)
+
     Route::patch('/{id}', [FavoriteMovieController::class, 'update']);
-        // Exemplo: PATCH /api/favorites/123
+        // Exemplo: PATCH /api/favorites/123 (Update - Item)
     Route::delete('/{id}', [FavoriteMovieController::class, 'destroy']);
-    // Exemplo: DELETE /api/favorites/123
+    // Exemplo: DELETE /api/favorites/123 (Delete - Item)
 });
 
 
@@ -36,5 +38,6 @@ Route::prefix('favorites')->group(function () {
 // Exemplo de uso no frontend: GET /api/genres
 Route::get('/genres', function (\App\Service\TmdbService $tmdbService) {
     $result = $tmdbService->getGenreMovies();
+    // Retorna os dados dos gêneros, junto com o status HTTP apropriado.
     return response()->json($result['data'], $result['status_code']);
 });
