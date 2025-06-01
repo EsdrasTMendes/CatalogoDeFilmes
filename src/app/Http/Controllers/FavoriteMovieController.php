@@ -33,6 +33,8 @@ class FavoriteMovieController extends Controller
      */
     public function store(Request $request)
     {
+        // Adicionar lógica:
+        //Antes de mandar os filmes para o frontEnd, preciso realizar uma verificação se o filme é um filme favorito.
         try {
             $validatedData = $request->validate([
                 'tmdb_id'        => 'required|integer|min:1',

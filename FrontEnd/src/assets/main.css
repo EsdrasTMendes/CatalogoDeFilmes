@@ -1,8 +1,5 @@
 @import 'tailwindcss';
 
-
-
-
 @theme {
     --color-kh-purple: #6A00F5;        /* Roxo principal */
     --color-kh-purple-light: #F4F0FF;  /* Lilás bem clarinho para fundos */
@@ -10,11 +7,11 @@
     --color-kh-gray-medium: #555555;   /* Cinza médio para texto secundário */
     --color-kh-gray-light: #f8f9fa;    /* Cinza bem claro para fundos de card ou bordas */
     --font-family-sans: "Montserrat", "sans-serif"; /* Define a família de fontes padrão */
+    --font-family-work-sans: "Work Sans", "sans-serif"; /* Família de fontes alternativa */
 }
 
 @layer base {
     body {
-      /* Aplicando as variáveis CSS definidas no @theme */
       background-color: var(--color-kh-purple-light);
       color: var(--color-kh-gray-dark);
       font-family: var(--font-family-sans);
@@ -23,50 +20,16 @@
     }
 
     h1, h2, h3, h4, h5, h6 {
-      /* Exemplo de estilo para títulos, usando as variáveis */
       color: var(--color-kh-purple);
-      @apply font-semibold; /* Você ainda pode usar @apply para outras utilidades Tailwind */
+      font-family: var(--font-family-sans);
+      font-weight: 600;
+      @apply font-semibold;
     }
 
-    /* Outros estilos base globais podem vir aqui */
-    /* Ex:
-    a {
-      color: var(--color-kh-purple);
-      @apply hover:underline;
+    .text-background {
+      color: var(--color-kh-gray-black);
+      font-family: var(--font-family-work-sans);
+      font-size: 0.9rem;
+      font-bold: 700;
     }
-    */
 }
-
-/* #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-} */

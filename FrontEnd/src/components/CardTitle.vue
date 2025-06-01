@@ -1,6 +1,6 @@
 <template>
   <div
-    class="title-section px-3 py-2 text-center flex-shrink-0 border-b border-gray-200 h-[45px] overflow-hidden relative"
+    class="title-section px-2 py-3 text-center bg-violet-50 flex-shrink-0 h-[45px] overflow-hidden relative"
     ref="titleContainer"
   >
     <h3

@@ -1,5 +1,6 @@
 <template>
-  <div class="min-h-screen"> <header class="py-8 shadow-sm bg-white">
+  <div class="min-h-screen">
+    <header class="py-8 shadow-sm bg-white">
       <div class="container mx-auto px-4">
         <h1 class="text-3xl font-bold text-kh-purple text-center">Meu Catálogo de Filmes</h1>
       </div>
