@@ -1,6 +1,8 @@
 <template>
   <div class="min-h-screen flex flex-col bg-kh-purple-light">
-    <AppHeader @navigate-to-search-home="resetToSearchHome" />
+    <AppHeader
+  @navigate-to-search-home="resetToSearchHome"
+  @list-favorites-requested="handleListFavorites" />
 
     <main class="flex-grow flex">
       <SearchMovies
@@ -56,6 +58,7 @@ export default {
       movieList: [],
       currentView: 'search',
       isLoading: false,
+      isFavoriteMovie: false,
     };
   },
   computed: {
@@ -108,6 +111,7 @@ export default {
         console.log("Resposta da API de Favoritos:", response);
 
         if (response && response.data) {
+        console.log("Resposta da API de Favoritos, pós if:", response);
           this.movieList = response.data;
         } else if (response) {
           this.movieList = response;

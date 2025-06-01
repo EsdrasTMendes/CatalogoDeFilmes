@@ -11,7 +11,7 @@ class FavoriteMovie extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tmdb_id',
+        'id',
         'title',
         'original_title',
         'release_date',
@@ -19,6 +19,7 @@ class FavoriteMovie extends Model
         'genre_ids',
         'rating',
         'poster_path',
+        'is_favorite',
     ];
 
     protected $casts = [

@@ -22,16 +22,16 @@
         type="search"
         v-model="searchQuery"
         placeholder="Ex: Interestelar, Vingadores, etc..."
-        class="px-4 py-3 border-0 text-base text-kh-gray-dark focus:ring-2 focus:ring-kh-purple flex-grow min-w-0"
+        class="px-4 py-3 border-0 text-base text-kh-gray-dark focus:ring-2 focus:ring-kh-purple flex-grow min-w-0 hover:text-[#eb4b00]"
         ref="searchInput"
         aria-label="Campo de busca de filmes"
       />
       <button
         type="submit"
-        class="bg-kh-purple text-white px-5 py-3 hover:bg-opacity-80 transition-colors"
+        class="bg-kh-purple text-white px-5 py-3 hover:bg-opacity-80 hover:text-[#eb4b00] group focus:outline-none focus:ring-2 focus:ring-kh-purple focus:ring-offset-1 transition-all duration-300 ease-in-out"
         aria-label="Buscar"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 group-hover:scale-110 transition-transform duration-300 ease-in-out">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
         </svg>
       </button>
@@ -40,7 +40,7 @@
     <div class="mt-12">
       <button
         @click="listFavorites"
-        class="bg-transparent hover:bg-kh-purple-light text-kh-purple font-semibold hover:text-opacity-90 py-3 px-6 border border-kh-purple hover:border-transparent rounded-lg transition-all duration-300"
+        class="bg-transparent hover:bg-kh-purple-light text-kh-purple font-semibold hover:text-[#eb4b00] py-3 px-6 border border-kh-purple hover:border-transparent rounded-lg transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-kh-purple focus:ring-offset-1"
       >
         Listar Meus Filmes Favoritos
       </button>
@@ -58,16 +58,14 @@ export default {
     };
   },
   mounted() {
-    // Foca no campo de busca ao montar o componente
     this.$refs.searchInput?.focus();
   },
   methods: {
     submitSearch() {
       if (this.searchQuery.trim()) {
         this.$emit('search-initiated', this.searchQuery.trim());
-        // this.searchQuery = ''; // Opcional: limpar após a busca
       } else {
-        this.$refs.searchInput?.focus(); // Foca de novo se tentar buscar vazio
+        this.$refs.searchInput?.focus();
       }
     },
     listFavorites() {

@@ -105,7 +105,7 @@ const rateFavoriteMovie = async (movieId, rating) => {
 
 export {
   searchMovies, // ok
-  getFavoriteMovies,
+  getFavoriteMovies, // ok
   postFavoriteMovie, // ok
   removeFavoriteMovie, // ok
   getAllGenres,

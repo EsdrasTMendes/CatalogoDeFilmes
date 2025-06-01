@@ -17,7 +17,7 @@ class FavoriteMovieService
     public function CreateFavoriteMovie(object $movie): array
     {
         try {
-            $existingFavorite = FavoriteMovie::where('tmdb_id', $movie->id)->first();
+            $existingFavorite = FavoriteMovie::where('id', $movie->id)->first();
             if ($existingFavorite) {
                 return [
                     'status_code' => 200,
@@ -27,7 +27,7 @@ class FavoriteMovieService
             }
 
             $favoriteMovie = FavoriteMovie::create([
-                'tmdb_id' => $movie->id,
+                'id' => $movie->id,
                 'title' => $movie->title,
                 'original_title' => $movie->original_title,
                 'release_date' => $movie->release_date,
@@ -74,7 +74,7 @@ class FavoriteMovieService
     public function DeleteFavoriteMovie(int $id): array
     {
         try {
-            $favoriteMovie = FavoriteMovie::where('tmdb_id', $id)->first();
+            $favoriteMovie = FavoriteMovie::where('id', $id)->first();
             if (!$favoriteMovie) {
                 return [
                     'status_code' => 404,
@@ -101,7 +101,7 @@ class FavoriteMovieService
     public function UpdateFavoriteMovie(int $id, int $rating): array
     {
         try {
-            $favoriteMovie = FavoriteMovie::where('tmdb_id', $id)->first();
+            $favoriteMovie = FavoriteMovie::where('id', $id)->first();
             if (!$favoriteMovie) {
                 return [
                     'status_code' => 404,

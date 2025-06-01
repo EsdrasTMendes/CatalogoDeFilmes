@@ -57,8 +57,8 @@ export default {
   data() {
     return {
       isFlipped: false,
-      isFavorite: false,
-      currentRating: 0,
+      isFavorite: (this.movie.is_favorite == 1 ? true : false), // Verifica se o filme é favorito
+      currentRating: this.movie.rating || 0, // Se for favorito, inicia com 0, senão null
     };
   },
   methods: {

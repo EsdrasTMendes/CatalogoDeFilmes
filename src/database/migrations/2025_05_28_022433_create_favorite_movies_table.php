@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('favorite_movies', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('tmdb_id')->unique();
+            $table->unsignedBigInteger('id')->primary();
             $table->string('title');
             $table->string('original_title')->nullable();
             $table->date('release_date')->nullable();
@@ -21,6 +20,7 @@ return new class extends Migration
             $table->json('genre_ids')->nullable();
             $table->integer('rating')->nullable();
             $table->string('poster_path')->nullable();
+            $table->boolean(('is_favorite'))->default(true);
             $table->timestamps();
         });
     }
