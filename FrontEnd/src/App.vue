@@ -1,85 +1,45 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div class="min-h-screen"> <header class="py-8 shadow-sm bg-white">
+      <div class="container mx-auto px-4">
+        <h1 class="text-3xl font-bold text-kh-purple text-center">Meu Catálogo de Filmes</h1>
+      </div>
+    </header>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <main class="container mx-auto p-6 md:p-8">
+      <div v-if="movieList.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+        <MovieCard
+          v-for="movie in movieList"
+          :key="movie.id"
+          :movie="movie"
+        />
+      </div>
+      <div v-else class="text-center py-12">
+        <p class="text-xl text-kh-gray-medium">Nenhum filme encontrado.</p>
+      </div>
+    </main>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <footer class="py-6 mt-10 text-center border-t border-gray-300">
+      <p class="text-sm text-kh-gray-medium">&copy; {{ new Date().getFullYear() }} Catálogo de Filmes. Inspirado por KingHost.</p>
+    </footer>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script>
+import MovieCard from './components/MovieCard.vue';
+import { movies } from './mock/movies'; // Seu mock
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+export default {
+  name: 'App',
+  components: {
+    MovieCard
+  },
+  data() {
+    return {
+      movieList: movies
+    }
   }
 }
+</script>
+
+<style>
 </style>
