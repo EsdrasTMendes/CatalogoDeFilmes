@@ -32,4 +32,8 @@
       font-size: 0.9rem;
       font-bold: 700;
     }
+
+    .class-footer {
+      color: var(--color-kh-purple);
+    }
 }
