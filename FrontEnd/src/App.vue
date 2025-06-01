@@ -37,11 +37,11 @@
 </template>
 
 <script>
-import AppHeader from './components/AppHeader.vue'; // Corrigido o nome do componente, se o seu era AppHeader.vue
-import AppFooter from './components/AppFooter.vue'; // Corrigido o nome do componente, se o seu era AppFooter.vue
+import AppHeader from './components/AppHeader.vue';
+import AppFooter from './components/AppFooter.vue';
 import MovieCard from './components/MovieCard.vue';
-import SearchMovies from './components/SearchMovies.vue'; // Corrigido o nome do componente, se o seu era SearchMovies.vue
-import { searchMovies, getFavoriteMovies } from './services/MovieService'; // Assumindo que você terá getFavoriteMovies
+import SearchMovies from './components/SearchMovies.vue';
+import { searchMovies, getFavoriteMovies } from './services/MovieService';
 
 export default {
   name: 'App',
@@ -76,25 +76,16 @@ export default {
       this.movieList = [];
 
       try {
-        const response = await searchMovies(query); // Sua função de serviço
-        console.log("Resposta da API (bruta):", response); // Log para ver a estrutura da resposta completa
+        const response = await searchMovies(query);
+        console.log("Resposta da API (bruta):", response);
 
-        // Verifique a estrutura da sua 'response'.
-        // Se 'searchMovies' retorna o objeto de resposta do Axios, os dados estarão em response.data.
-        // Se a API aninha os resultados (ex: { page: 1, results: [...] }), seria response.data.results.
-        // Ajuste conforme necessário. Vou assumir que response.data é o array de filmes.
         if (response && response.data) {
-          // Mapeie os dados se os nomes das propriedades da API forem diferentes dos esperados pelo MovieCard
-          // Exemplo: se a API retorna 'title' mas MovieCard espera 'name', ou 'poster_path' vs 'image'
-          // Por agora, vou assumir que os nomes são compatíveis ou que seu MovieCard já lida com os nomes da API.
           this.movieList = response.data;
           console.log("Filmes atribuídos a movieList:", this.movieList);
         } else if (response) {
-          // Se searchMovies já retorna o array de filmes diretamente (não o objeto Axios inteiro)
           this.movieList = response;
-           console.log("Filmes atribuídos a movieList (resposta direta):", this.movieList);
+          console.log("Filmes atribuídos a movieList (resposta direta):", this.movieList);
         } else {
-          // Se a resposta for inesperada ou vazia
           this.movieList = [];
           console.warn("Resposta da API não continha os dados esperados ou estava vazia.");
         }
@@ -113,7 +104,6 @@ export default {
       this.movieList = [];
 
       try {
-        // Supondo que você tenha uma função getFavoriteMovies em MovieService
         const response = await getFavoriteMovies();
         console.log("Resposta da API de Favoritos:", response);
 
@@ -136,11 +126,8 @@ export default {
 </script>
 
 <style>
-/* Garante que o body ocupe a altura total e o App também */
 html, body, #app {
   height: 100%;
   margin: 0;
 }
-/* A classe bg-kh-purple-light já deve estar no seu style.css global para o body */
-/* Adicione aqui quaisquer estilos globais necessários ou no seu assets/style.css */
 </style>

@@ -79,14 +79,10 @@ export default {
 
 <style scoped>
 .search-movies-container {
-  /* Para ocupar o espaço disponível na área de <main> do App.vue */
-  /* Se App.vue <main> tem flex-grow, este componente pode ter width e height 100% */
   width: 100%;
-  /* min-height: calc(100vh - altura_do_header - altura_do_footer); */ /* Se quiser que preencha a tela verticalmente */
 }
 
 input[type="search"] {
-  /* Remove o 'x' padrão do campo de busca em alguns navegadores */
   -webkit-appearance: none;
   appearance: none;
 }

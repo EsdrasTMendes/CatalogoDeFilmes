@@ -1,18 +1,16 @@
 import axios from "axios";
 
-const API_KEY = "sua_chave_aqui"; // Substitua se for necessário
-const API_URL = "http://127.0.0.1:8000/api/movies/search";
-
 const apiClient = axios.create({
-  baseURL: API_URL,
-  params: {
-    api_key: API_KEY,
-  },
+  baseURL: "http://127.0.0.1:8000/api/",
 });
 
-export const searchMovies = async (query) => {
+/**
+ * Busca filmes por nome.
+ * Endpoint: GET /movies/search?query={query}
+ */
+const searchMovies = async (query) => {
   try {
-    const response = await apiClient.get("", {
+    const response = await apiClient.get("/movies/search", {
       params: { query },
     });
     return response.data;
@@ -22,16 +20,95 @@ export const searchMovies = async (query) => {
   }
 };
 
-export const getFavoriteMovies = async () => {}
+/**
+ * Busca todos os filmes favoritos.
+ * Endpoint: GET /favorites
+ */
+const getFavoriteMovies = async () => {
+  try {
+    const response = await apiClient.get("/favorites");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar filmes favoritos:", error);
+    throw error;
+  }
+};
 
-export const postFavoriteMovies = async () => {}
+/**
+ * Salva um filme como favorito.
+ * Endpoint: POST /favorites
+ * Body: { tmdb_id, title, original_title, release_date, overview, genre_ids, poster_path }
+ */
+const postFavoriteMovie = async (movieData) => {
+  try {
+    const response = await apiClient.post("/favorites", movieData);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao salvar filme favorito:", error);
+    throw error;
+  }
+};
 
-export const removeFavoriteMovies = async () => {}
+/**
+ * Remove um filme dos favoritos pelo ID.
+ * Endpoint: DELETE /favorites/{movieId}
+ */
+const removeFavoriteMovie = async (movieId) => {
+  try {
+    const response = await apiClient.delete(`/favorites/${movieId}`);
+    return response;
+  } catch (error) {
+    console.error(`Erro ao remover filme favorito ${movieId}:`, error);
+    throw error;
+  }
+};
 
-export const getAllGenresMovies = async () => {}
+/**
+ * Busca todos os gêneros de filmes.
+ * Endpoint: GET /genres
+ */
+const getAllGenres = async () => {
+  try {
+    const response = await apiClient.get("/genres");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar gêneros:", error);
+    throw error;
+  }
+};
 
-export const getMoviesByGenre = async (genreId) => { console.log (`Buscando filmes do gênero ${genreId}`);}
+/**
+ * Busca filmes por gênero. // Falta lógica no backEnd
+ */
+const getMoviesByGenre = async (genreId) => {
+  console.log(`Buscando filmes do gênero ${genreId}`);
+};
 
-export const ratingFavoriteMovies = async (movieId, rating) => {
-  console.log(`Avaliando filme ${movieId} com nota ${rating}`);
+/**
+ * Atualiza a nota de um filme favorito.
+ * Endpoint: PATCH (ou PUT) /favorites/{movieId}
+ * Body: { rating }
+ */
+const rateFavoriteMovie = async (movieId, rating) => {
+  try {
+    const response = await apiClient.patch(`/favorites/${movieId}`, { rating });
+    console.log(
+      `Filme ${movieId} avaliado com nota ${rating}. Resposta:`,
+      response.data
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Erro ao avaliar filme ${movieId}:`, error);
+    throw error;
+  }
+};
+
+export {
+  searchMovies, // ok
+  getFavoriteMovies,
+  postFavoriteMovie, // ok
+  removeFavoriteMovie, // ok
+  getAllGenres,
+  getMoviesByGenre,
+  rateFavoriteMovie, // ok
 }

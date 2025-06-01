@@ -37,7 +37,7 @@ class FavoriteMovieController extends Controller
         //Antes de mandar os filmes para o frontEnd, preciso realizar uma verificação se o filme é um filme favorito.
         try {
             $validatedData = $request->validate([
-                'tmdb_id'        => 'required|integer|min:1',
+                'id'        => 'required|integer|min:1',
                 'title'          => 'required|string',
                 'original_title' => 'nullable|string',
                 'release_date'   => 'nullable|date',
@@ -55,6 +55,7 @@ class FavoriteMovieController extends Controller
             $result = $this->favoriteMovieService->CreateFavoriteMovie($movieObject);
 
             return response()->json([
+                'status' => $result['status_code'],
                 'message' => $result['message'],
                 'data' => $result['data']
             ], $result['status_code']);
@@ -154,8 +155,8 @@ class FavoriteMovieController extends Controller
 
             // Retorna a resposta JSON com o status code e dados/mensagem da Service.
             return response()->json([
+                'status' => $result['status_code'],
                 'message' => $result['message'],
-                'data' => $result['data']
             ], $result['status_code']);
 
         } catch (Exception $e) {

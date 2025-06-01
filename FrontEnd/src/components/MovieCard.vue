@@ -34,10 +34,11 @@
 </template>
 
 <script>
-import CardTitle from './CardTitle.vue';     // Ajuste o caminho se necessário
-import CardImage from './CardImage.vue';     // Ajuste o caminho se necessário
-import CardActions from './CardActions.vue';   // Ajuste o caminho se necessário
-import CardBack from './CardBack.vue';       // Ajuste o caminho se necessário
+import CardTitle from './CardTitle.vue';
+import CardImage from './CardImage.vue';
+import CardActions from './CardActions.vue';
+import CardBack from './CardBack.vue';
+import { postFavoriteMovie, removeFavoriteMovie, rateFavoriteMovie } from '../services/MovieService';
 
 export default {
   name: 'MovieCard',
@@ -56,29 +57,33 @@ export default {
   data() {
     return {
       isFlipped: false,
-      isFavorite: false,  // Gerenciado aqui, passado como prop para CardActions
-      currentRating: 0, // Gerenciado aqui, passado como prop para CardActions
+      isFavorite: false,
+      currentRating: 0,
     };
   },
   methods: {
     toggleFlip() {
       this.isFlipped = !this.isFlipped;
     },
-    handleToggleFavorite() {
-      this.isFavorite = !this.isFavorite;
-      if (!this.isFavorite) {
-        this.currentRating = 0;
-        console.log(`Filme "${this.movie.title}" removido dos favoritos (MovieCard).`);
+    async handleToggleFavorite() {
+      const response = await (this.isFavorite ? removeFavoriteMovie(this.movie.id) : postFavoriteMovie(this.movie));
+      console.log("Resposta do servidor:", response); // Pensar algum elemento visual para feedback
+      if (response.status === 201 || response.status === 204) {
+        this.isFavorite = !this.isFavorite;
+        console.log(`Filme "${this.movie.title}" ${this.isFavorite ? 'adicionado' : 'removido'} aos favoritos (MovieCard).`);
+        if (this.isFavorite) {
+          this.currentRating = 0;
+        }
       } else {
-        console.log(`Filme "${this.movie.title}" adicionado aos favoritos (MovieCard).`);
+        console.error(`Erro ao ${this.isFavorite ? 'remover' : 'adicionar'} filme "${this.movie.title}" aos favoritos.`);
       }
-      // Futuramente: this.$emit('update-favorite-status', { id: this.movie.id, isFavorite: this.isFavorite });
     },
-    handleRateMovie(rating) {
+
+    async handleRateMovie(rating) {
+      const response = await rateFavoriteMovie(this.movie.id, rating);
+      console.log("Resposta do servidor ao avaliar filme:", response); // Pensar algum elemento visual para feedback
       if (!this.isFavorite) return;
       this.currentRating = rating;
-      console.log(`Filme "${this.movie.title}" avaliado com ${rating} estrelas (MovieCard).`);
-      // Futuramente: this.$emit('update-rating', { id: this.movie.id, rating: this.currentRating });
     },
   },
 };
@@ -105,15 +110,10 @@ export default {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  /* As classes de rounded-lg e overflow-hidden estão nos componentes filhos (CardFront e CardBack em suas raízes) */
 }
 
-/* .card-front já tem bg-kh-card-bg em sua raiz no template do MovieCard.vue */
-/* .card-front { } */
 
 .card-back {
-  /* O componente CardBack.vue já tem bg-kh-card-bg em sua raiz.
-     A rotação é aplicada aqui para o efeito de flip. */
   transform: rotateY(180deg);
 }
 </style>
