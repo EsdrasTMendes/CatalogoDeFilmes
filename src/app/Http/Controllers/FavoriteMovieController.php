@@ -167,4 +167,21 @@ class FavoriteMovieController extends Controller
             ], 500);
         }
     }
+
+    public function getByGenre(int $genreId)
+    {
+        try {
+            $result = $this->favoriteMovieService->GetFavoriteMoviesByGenre($genreId);
+            return response()->json([
+                'message' => $result['message'],
+                'data' => $result['data']
+            ], $result['status_code']);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Ocorreu um erro inesperado ao listar filmes favoritos por gênero.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

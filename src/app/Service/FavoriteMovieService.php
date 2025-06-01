@@ -126,4 +126,31 @@ class FavoriteMovieService
             ];
         }
     }
+
+    public function getFavoriteMoviesByGenre(int $genreId): array
+    {
+        try {
+            $favoriteMovies = FavoriteMovie::whereJsonContains('genre_ids', $genreId)->get();
+
+            if ($favoriteMovies->isEmpty()) {
+                return [
+                    'status_code' => 404,
+                    'message' => 'Nenhum filme favorito encontrado para este gênero.',
+                    'data' => [],
+                ];
+            }
+
+            return [
+                'status_code' => 200,
+                'message' => 'Filmes favoritos recuperados com sucesso.',
+                'data' => $favoriteMovies->toArray(),
+            ];
+        } catch (Exception $e) {
+            return [
+                'status_code' => 500,
+                'message' => 'Erro interno ao recuperar filmes favoritos por gênero: ' . $e->getMessage(),
+                'data' => [],
+            ];
+        }
+    }
 }

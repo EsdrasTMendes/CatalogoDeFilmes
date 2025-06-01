@@ -104,4 +104,5 @@ public function searchMovies($query)
             'data' => []
         ];
     }
+
 }

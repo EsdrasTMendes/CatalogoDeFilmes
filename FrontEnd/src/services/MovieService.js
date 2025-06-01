@@ -78,10 +78,14 @@ const getAllGenres = async () => {
 };
 
 /**
- * Busca filmes por gênero. // Falta lógica no backEnd
+ * Busca entre os filmes favoritos por gênero.
  */
 const getMoviesByGenre = async (genreId) => {
-  console.log(`Buscando filmes do gênero ${genreId}`);
+  const response = await apiClient.get(`/favorites/favoriteMoviesByGenre/${genreId}`);
+  if (response.status !== 200) {
+    throw new Error(`Erro ao buscar filmes por gênero ${genreId}: ${response.statusText}`);
+  }
+  return response;
 };
 
 /**
