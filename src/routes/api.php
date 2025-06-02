@@ -15,7 +15,7 @@ Route::get('/movies/search', function (Request $request, \App\Service\TmdbServic
     $result = $tmdbService->searchMovies($query);
     return response()->json($result['data'], $result['status_code']);
 });
-// Mudar a service para uma controller depois que estiver funcionando corretamente.
+
 
 
 // --- Rotas para Gerenciar Filmes Favoritos (CRUD) ---
