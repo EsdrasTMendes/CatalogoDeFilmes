@@ -9,23 +9,65 @@ services:
     volumes:
       - ./src:/var/www
     ports:
-      - "8000:8000"
+      - "${APP_PORT:-8000}:8000"
+    environment:
+      APP_NAME: "${APP_NAME}"
+      APP_ENV: "${APP_ENV:-local}"
+      APP_KEY: "${APP_KEY}"
+      APP_DEBUG: "${APP_DEBUG:-true}"
+      APP_URL: "${APP_URL}"
+
+      LOG_CHANNEL: "${LARAVEL_LOG_CHANNEL:-stderr}"
+
+      DB_CONNECTION: "${LARAVEL_DB_CONNECTION:-mysql}"
+      DB_HOST: "${LARAVEL_DB_HOST:-db}"
+      DB_PORT: "${LARAVEL_DB_PORT:-3306}"
+      DB_DATABASE: "${LARAVEL_DB_DATABASE}"
+      DB_USERNAME: "${LARAVEL_DB_USERNAME}"
+      DB_PASSWORD: "${LARAVEL_DB_PASSWORD}"
+
+      TMDB_API_KEY: "${TMDB_API_KEY}"
+
+      SESSION_DRIVER: "${LARAVEL_SESSION_DRIVER:-file}"
+      QUEUE_CONNECTION: "${LARAVEL_QUEUE_CONNECTION:-sync}"
+      CACHE_STORE: "${LARAVEL_CACHE_STORE:-file}"
+
     depends_on:
-      - db
-    command: php artisan serve --host=0.0.0.0 --port=8000
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: FrontEnd/Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:${APP_PORT:-8000}/api
+    container_name: catalogo_frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    depends_on:
+      - app
 
   db:
     image: mysql:8.0
     container_name: catalogo_db
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: catalogo_filmes
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_USER: user
-      MYSQL_PASSWORD: userpassword
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
     ports:
-      - "3307:3306"
+      - "${DB_EXPOSED_PORT:-3307}:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
 volumes:
   db_data:
