@@ -17,7 +17,7 @@ class FavoriteMovieService
     public function CreateFavoriteMovie(object $movie): array
     {
         try {
-            $existingFavorite = FavoriteMovie::where('tmdb_id', $movie->tmdb_id)->first();
+            $existingFavorite = FavoriteMovie::where('id', $movie->id)->first();
             if ($existingFavorite) {
                 return [
                     'status_code' => 200,
@@ -27,7 +27,7 @@ class FavoriteMovieService
             }
 
             $favoriteMovie = FavoriteMovie::create([
-                'tmdb_id' => $movie->tmdb_id,
+                'id' => $movie->id,
                 'title' => $movie->title,
                 'original_title' => $movie->original_title,
                 'release_date' => $movie->release_date,
@@ -74,7 +74,7 @@ class FavoriteMovieService
     public function DeleteFavoriteMovie(int $id): array
     {
         try {
-            $favoriteMovie = FavoriteMovie::find($id);
+            $favoriteMovie = FavoriteMovie::where('id', $id)->first();
             if (!$favoriteMovie) {
                 return [
                     'status_code' => 404,
@@ -86,9 +86,8 @@ class FavoriteMovieService
             $favoriteMovie->delete();
 
             return [
-                'status_code' => 200,
+                'status_code' => 204,
                 'message' => 'Filme favorito removido com sucesso.',
-                'data' => [],
             ];
         } catch (Exception $e) {
             return [
@@ -102,7 +101,7 @@ class FavoriteMovieService
     public function UpdateFavoriteMovie(int $id, int $rating): array
     {
         try {
-            $favoriteMovie = FavoriteMovie::find($id);
+            $favoriteMovie = FavoriteMovie::where('id', $id)->first();
             if (!$favoriteMovie) {
                 return [
                     'status_code' => 404,
@@ -123,6 +122,33 @@ class FavoriteMovieService
             return [
                 'status_code' => 500,
                 'message' => 'Erro interno ao atualizar filme favorito: ' . $e->getMessage(),
+                'data' => [],
+            ];
+        }
+    }
+
+    public function getFavoriteMoviesByGenre(int $genreId): array
+    {
+        try {
+            $favoriteMovies = FavoriteMovie::whereJsonContains('genre_ids', $genreId)->get();
+
+            if ($favoriteMovies->isEmpty()) {
+                return [
+                    'status_code' => 404,
+                    'message' => 'Nenhum filme favorito encontrado para este gênero.',
+                    'data' => [],
+                ];
+            }
+
+            return [
+                'status_code' => 200,
+                'message' => 'Filmes favoritos recuperados com sucesso.',
+                'data' => $favoriteMovies->toArray(),
+            ];
+        } catch (Exception $e) {
+            return [
+                'status_code' => 500,
+                'message' => 'Erro interno ao recuperar filmes favoritos por gênero: ' . $e->getMessage(),
                 'data' => [],
             ];
         }

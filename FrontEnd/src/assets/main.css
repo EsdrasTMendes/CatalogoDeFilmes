@@ -1,0 +1,39 @@
+@import 'tailwindcss';
+
+@theme {
+    --color-kh-purple: #6A00F5;        /* Roxo principal */
+    --color-kh-purple-light: #F4F0FF;  /* Lilás bem clarinho para fundos */
+    --color-kh-gray-dark: #333333;     /* Cinza escuro para texto principal */
+    --color-kh-gray-medium: #555555;   /* Cinza médio para texto secundário */
+    --color-kh-gray-light: #f8f9fa;    /* Cinza bem claro para fundos de card ou bordas */
+    --font-family-sans: "Montserrat", "sans-serif"; /* Define a família de fontes padrão */
+    --font-family-work-sans: "Work Sans", "sans-serif"; /* Família de fontes alternativa */
+}
+
+@layer base {
+    body {
+      background-color: var(--color-kh-purple-light);
+      color: var(--color-kh-gray-dark);
+      font-family: var(--font-family-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--color-kh-purple);
+      font-family: var(--font-family-sans);
+      font-weight: 600;
+      @apply font-semibold;
+    }
+
+    .text-background {
+      color: var(--color-kh-gray-black);
+      font-family: var(--font-family-work-sans);
+      font-size: 0.9rem;
+      font-bold: 700;
+    }
+
+    .class-footer {
+      color: var(--color-kh-purple);
+    }
+}

@@ -33,9 +33,11 @@ class FavoriteMovieController extends Controller
      */
     public function store(Request $request)
     {
+        // Adicionar lógica:
+        //Antes de mandar os filmes para o frontEnd, preciso realizar uma verificação se o filme é um filme favorito.
         try {
             $validatedData = $request->validate([
-                'tmdb_id'        => 'required|integer|min:1',
+                'id'        => 'required|integer|min:1',
                 'title'          => 'required|string',
                 'original_title' => 'nullable|string',
                 'release_date'   => 'nullable|date',
@@ -53,6 +55,7 @@ class FavoriteMovieController extends Controller
             $result = $this->favoriteMovieService->CreateFavoriteMovie($movieObject);
 
             return response()->json([
+                'status' => $result['status_code'],
                 'message' => $result['message'],
                 'data' => $result['data']
             ], $result['status_code']);
@@ -152,14 +155,31 @@ class FavoriteMovieController extends Controller
 
             // Retorna a resposta JSON com o status code e dados/mensagem da Service.
             return response()->json([
+                'status' => $result['status_code'],
                 'message' => $result['message'],
-                'data' => $result['data']
             ], $result['status_code']);
 
         } catch (Exception $e) {
             // Captura qualquer outra exceção inesperada e retorna um erro 500
             return response()->json([
                 'message' => 'Ocorreu um erro inesperado ao remover filme favorito.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function getByGenre(int $genreId)
+    {
+        try {
+            $result = $this->favoriteMovieService->GetFavoriteMoviesByGenre($genreId);
+            return response()->json([
+                'message' => $result['message'],
+                'data' => $result['data']
+            ], $result['status_code']);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Ocorreu um erro inesperado ao listar filmes favoritos por gênero.',
                 'error' => $e->getMessage(),
             ], 500);
         }
