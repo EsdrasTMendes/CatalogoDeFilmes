@@ -8,7 +8,7 @@
       </div>
       <div>
           <h2 class="text-2xl md:text-3xl font-semibold text-kh-gray-dark mb-6">
-            Bem-vindo ao Catálogo de Filmes!
+            Boas vindas ao Catálogo de Filmes!
           </h2>
       </div>
     </div>

@@ -1,10 +1,8 @@
 <template>
   <header class="py-4 shadow-sm bg-white">
     <div class="container mx-auto px-4 flex justify-between items-center h-12">
-
       <button
-        @click="requestListFavorites"
-        class="flex items-center p-2 rounded-md text-kh-purple hover:text-[#eb4b00] hover:bg-kh-purple-light transition-colors duration-300 focus:outline-none group"
+        @click="navigateToListFavorites" class="flex items-center p-2 rounded-md text-kh-purple hover:text-[#eb4b00] hover:bg-kh-purple-light transition-colors duration-300 focus:outline-none group"
         title="Listar filmes favoritos"
         aria-label="Listar filmes favoritos"
       >
@@ -15,14 +13,13 @@
       </button>
 
       <div class="text-center">
-        <span class="text-xl font-semibold text-kh-purple select-none">
+        <router-link to="/" class="text-xl font-semibold text-kh-purple select-none hover:text-[#eb4b00] transition-colors">
           Catálogo de Filmes
-        </span>
+        </router-link>
       </div>
 
       <button
-        @click="navigateToSearchHome"
-        class="flex items-center p-2 rounded-md text-kh-purple hover:text-[#eb4b00] hover:bg-kh-purple-light transition-colors duration-300 focus:outline-none group"
+        @click="navigateToSearchHome" class="flex items-center p-2 rounded-md text-kh-purple hover:text-[#eb4b00] hover:bg-kh-purple-light transition-colors duration-300 focus:outline-none group"
         title="Buscar filmes"
         aria-label="Ir para a busca de filmes"
       >
@@ -31,7 +28,6 @@
         </svg>
         <span class="ml-2 font-medium group-hover:scale-105 transition-transform duration-300">Buscar filmes</span>
       </button>
-
     </div>
   </header>
 </template>
@@ -39,23 +35,18 @@
 <script>
 export default {
   name: 'AppHeader',
-  // Adicionamos o novo evento que será emitido
-  emits: ['navigate-to-search-home', 'list-favorites-requested'],
+  // Não precisa mais emitir eventos para navegação básica, o router cuida disso
   methods: {
     navigateToSearchHome() {
-      this.$emit('navigate-to-search-home');
+      if (this.$route.path !== '/') { // Evita navegação redundante
+        this.$router.push('/');
+      }
     },
-    requestListFavorites() {
-      // Emitimos o mesmo evento que o SearchMovies emite para listar favoritos
-      this.$emit('list-favorites-requested');
+    navigateToListFavorites() {
+      if (this.$route.path !== '/favorites') { // Evita navegação redundante
+        this.$router.push('/favorites');
+      }
     }
   }
 };
 </script>
-
-<style scoped>
-/* </button> { */
-  /* Garante que o texto não quebre linha facilmente se for um pouco maior */
-  /* white-space: nowrap; */
-/* } */
-</style>
