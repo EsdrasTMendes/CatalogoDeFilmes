@@ -14,7 +14,7 @@ Aplicação full stack para buscar, favoritar e listar filmes utilizando a API p
 
 ---
 
-## ⚙️ Como rodar o projeto com Docker
+## ⚙️ Como rodar o projeto com Docker - terminar
 
 ### 1. Clone o repositório
 
