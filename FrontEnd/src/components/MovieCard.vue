@@ -57,8 +57,8 @@ export default {
   data() {
     return {
       isFlipped: false,
-      isFavorite: (this.movie.is_favorite == 1 ? true : false), // Verifica se o filme é favorito
-      currentRating: this.movie.rating || 0, // Se for favorito, inicia com 0, senão null
+      isFavorite: (this.movie.is_favorite == 1 ? true : false),
+      currentRating: this.movie.rating || 0,
     };
   },
   methods: {
@@ -67,13 +67,14 @@ export default {
     },
     async handleToggleFavorite() {
       const response = await (this.isFavorite ? removeFavoriteMovie(this.movie.id) : postFavoriteMovie(this.movie));
-      console.log("Resposta do servidor:", response); // Pensar algum elemento visual para feedback
+      console.log("Resposta do servidor:", response);
       if (response.status === 201 || response.status === 204) {
         this.isFavorite = !this.isFavorite;
         console.log(`Filme "${this.movie.title}" ${this.isFavorite ? 'adicionado' : 'removido'} aos favoritos (MovieCard).`);
         if (this.isFavorite) {
           this.currentRating = 0;
         }
+        this.$emit('removed-from-favorites', this.movie.id);
       } else {
         console.error(`Erro ao ${this.isFavorite ? 'remover' : 'adicionar'} filme "${this.movie.title}" aos favoritos.`);
       }
@@ -81,7 +82,7 @@ export default {
 
     async handleRateMovie(rating) {
       const response = await rateFavoriteMovie(this.movie.id, rating);
-      console.log("Resposta do servidor ao avaliar filme:", response); // Pensar algum elemento visual para feedback
+      console.log("Resposta do servidor ao avaliar filme:", response);
       if (!this.isFavorite) return;
       this.currentRating = rating;
     },

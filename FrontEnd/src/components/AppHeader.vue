@@ -12,10 +12,18 @@
         <span class="ml-2 font-medium group-hover:scale-105 transition-transform duration-300">Listar favoritos</span>
       </button>
 
-      <div class="text-center">
-        <router-link to="/" class="text-xl font-semibold text-kh-purple select-none hover:text-[#eb4b00] transition-colors">
+            <div class="text-center">
+        <span
+          @click="navigateToSearchHome"
+          @keydown.enter="navigateToSearchHome"
+          @keydown.space.prevent="navigateToSearchHome"
+          role="link"
+          tabindex="0"
+          class="text-xl font-semibold text-kh-purple select-none hover:text-[#eb4b00] transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-kh-purple rounded"
+          aria-label="Ir para a página inicial de busca do catálogo de filmes"
+        >
           Catálogo de Filmes
-        </router-link>
+        </span>
       </div>
 
       <button
@@ -35,15 +43,12 @@
 <script>
 export default {
   name: 'AppHeader',
-  // Não precisa mais emitir eventos para navegação básica, o router cuida disso
   methods: {
     navigateToSearchHome() {
-      if (this.$route.path !== '/') { // Evita navegação redundante
-        this.$router.push('/');
-      }
+      this.$router.push({ path: '/', query: { refresh: Date.now() } });
     },
     navigateToListFavorites() {
-      if (this.$route.path !== '/favorites') { // Evita navegação redundante
+      if (this.$route.path !== '/favorites') {
         this.$router.push('/favorites');
       }
     }

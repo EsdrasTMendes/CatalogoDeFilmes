@@ -36,7 +36,7 @@ export default {
   emits: ['genre-selected'],
   data() {
     return {
-      selectedGenreId: null // Representa "Todos os Gêneros" inicialmente
+      selectedGenreId: null
     };
   },
   methods: {
@@ -45,24 +45,14 @@ export default {
     }
   },
   watch: {
-    // Se a rota mudar e este componente for reutilizado,
-    // pode ser útil resetar o select se necessário,
-    // mas geralmente a navegação para /favorites o recriará ou a view pai controlará o estado.
     '$route'() {
-      // Exemplo: se voltarmos para /favorites sem um gênero específico na URL, resetar.
-      // Isso depende de como você quer que o filtro persista ou não.
-      // Por ora, o FavoritesView.vue controlará o filtro.
     }
   }
 };
 </script>
 
 <style scoped>
-/* Para um <select> mais "bonitinho", você pode precisar de mais CSS
-   ou usar uma biblioteca de componentes UI que ofereça dropdowns estilizados.
-   As classes do Tailwind acima dão uma aparência limpa e funcional.
-   A classe "appearance-none" remove o estilo padrão do navegador. */
 select {
-  background-image: none; /* Garante que a seta customizada do div funcione bem */
+  background-image: none;
 }
 </style>

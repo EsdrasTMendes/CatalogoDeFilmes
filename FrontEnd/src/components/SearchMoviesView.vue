@@ -6,8 +6,8 @@
       @list-favorites-requested="navigateToListFavoritesPage"
     />
 
-    <div v-if="!showSearchInterface && isLoading" class="container mx-auto p-6 md:p-8 w-full text-center py-12">
-      <p class="text-xl text-kh-gray-medium">Carregando filmes...</p>
+    <div v-if="!showSearchInterface && isLoading" class="text-center py-12 flex justify-center items-center">
+      <div class="w-12 h-12 border-4 border-kh-purple rounded-full animate-spin" role="status" aria-label="Carregando filmes"></div>
     </div>
 
     <div v-if="!showSearchInterface && movieList.length > 0 && !isLoading" class="container mx-auto p-6 md:p-8 w-full">
@@ -31,12 +31,16 @@
 </template>
 
 <script>
-import SearchMovies from '../components/SearchMovies.vue'; // Seu componente de formulário de busca
+import SearchMovies from '../components/SearchMovies.vue';
 import MovieCard from '../components/MovieCard.vue';
 import { searchMovies as fetchMoviesByQuery } from '../services/MovieService';
 
 export default {
   name: 'SearchMoviesView',
+  mounted() {
+    if (this.$route.query.refresh) {
+      this.$router.replace({ path: '/', query: {} });
+    }},
   components: {
     SearchMovies,
     MovieCard,
@@ -45,13 +49,13 @@ export default {
     return {
       movieList: [],
       isLoading: false,
-      showSearchInterface: true, // Começa mostrando a interface de busca
+      showSearchInterface: true,
     };
   },
   methods: {
     async handleSearch(query) {
       this.isLoading = true;
-      this.showSearchInterface = false; // Esconde a interface de busca para mostrar resultados
+      this.showSearchInterface = false;
       this.movieList = [];
       try {
         const movies = await fetchMoviesByQuery(query);
@@ -67,13 +71,5 @@ export default {
         this.$router.push('/favorites');
     }
   },
-  // Se você quiser que a interface de busca reapareça ao voltar para esta rota
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      // Se estiver vindo de outra rota, talvez queira resetar para a tela de busca.
-      // vm.showSearchInterface = true;
-      // vm.movieList = [];
-    });
-  }
 };
 </script>
